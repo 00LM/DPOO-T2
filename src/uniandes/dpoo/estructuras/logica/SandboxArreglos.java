@@ -115,23 +115,26 @@ public class SandboxArreglos
      * Elimina todas las apariciones de un determinado valor dentro del arreglo de enteros
      * @param valor El valor que se va eliminar
      */
-    public void eliminarEntero( int valor )
-    {
-    	int vecesValor = 0;
-    	for(int i = 0; i<this.arregloEnteros.length; i++) {
-    		if (this.arregloEnteros[i] == valor) {
-    			vecesValor ++;
-    		}
-    	}
-    	int[] nuevoArregloEnteros = new int[this.arregloEnteros.length - vecesValor];
-    	for(int i = 0; i<this.arregloEnteros.length; i++)
-    		if (this.arregloEnteros[i] != valor) {
-    			nuevoArregloEnteros[i] = arregloEnteros[i];
-    			i--;
-    		}
-    	this.arregloEnteros = nuevoArregloEnteros;
+    public void eliminarEntero(int valor) {
+        int vecesValor = 0;
 
+        for (int i = 0; i < this.arregloEnteros.length; i++) {
+            if (this.arregloEnteros[i] == valor) {
+                vecesValor++;
+            }
+        }
+
+        int[] nuevoArregloEnteros = new int[this.arregloEnteros.length - vecesValor];
+        int j = 0; 
+        for (int i = 0; i < this.arregloEnteros.length; i++) {
+            if (this.arregloEnteros[i] != valor) {
+                nuevoArregloEnteros[j] = this.arregloEnteros[i];
+                j++;
+            }
+        }
+        this.arregloEnteros = nuevoArregloEnteros;
     }
+
 
     /**
      * Elimina todas las apariciones de un determinado valor dentro del arreglo de cadenas
@@ -139,19 +142,23 @@ public class SandboxArreglos
      */
     public void eliminarCadena( String cadena )
     {
-    	int vecesValor = 0;
-    	for(int i = 0; i<this.arregloCadenas.length; i++) {
-    		if (this.arregloCadenas[i] == cadena) {
-    			vecesValor ++;
-    		}
-    	}
-    	String[] nuevoArregloCadenas = new String[this.arregloCadenas.length - vecesValor];
-    	for(int i = 0; i<this.arregloCadenas.length; i++)
-    		if (this.arregloCadenas[i] != cadena) {
-    			nuevoArregloCadenas[i] = arregloCadenas[i];
-    		}
-    	this.arregloCadenas = nuevoArregloCadenas;
+        int vecesValor = 0;
 
+        for (int i = 0; i < this.arregloCadenas.length; i++) {
+            if (this.arregloCadenas[i] == cadena) {
+                vecesValor++;
+            }
+        }
+
+        String[] nuevoArregloCadenas = new String[this.arregloCadenas.length - vecesValor];
+        int j = 0; 
+        for (int i = 0; i < this.arregloCadenas.length; i++) {
+            if (this.arregloCadenas[i] != cadena) {
+            	nuevoArregloCadenas[j] = this.arregloCadenas[i];
+                j++;
+            }
+        }
+        this.arregloCadenas = nuevoArregloCadenas;
     }
 
     /**
@@ -162,22 +169,21 @@ public class SandboxArreglos
      *        posición es mayor que el tamaño del arreglo, se inserta el valor en la última posición.
      */
     public void insertarEntero(int entero, int posicion) {
-    	if (posicion > arregloEnteros.length) {
-    		posicion = arregloEnteros.length;
-    	}
-    	else if (posicion < arregloEnteros.length) {
-    		posicion = 0;
-    	}
-    	
+        if (posicion > arregloEnteros.length) {
+            posicion = arregloEnteros.length;
+        } 
+        else if (posicion < 0) {
+            posicion = 0;
+        }
+
         int[] nuevoArregloEnteros = new int[this.arregloEnteros.length + 1];
         int shift = 0; 
 
         for (int i = 0; i < nuevoArregloEnteros.length; i++) {
             if (i == posicion) {
                 nuevoArregloEnteros[i] = entero;
-                shift = 1;
-            } 
-            else {
+                shift = 1; 
+            } else {
                 nuevoArregloEnteros[i] = this.arregloEnteros[i - shift];
             }
         }
@@ -186,25 +192,28 @@ public class SandboxArreglos
     }
 
 
+
     /**
      * Elimina un valor del arreglo de enteros dada su posición.
      * @param posicion La posición donde está el elemento que debe ser eliminado. Si el parámetro posicion no corresponde a ninguna posición del arreglo de enteros, el método
      *        no debe hacer nada.
      */
-    public void eliminarEnteroPorPosicion( int posicion )
-    {
-    	int[] nuevoArregloEnteros = new int[this.arregloEnteros.length - 1];
-        int shift = 0; 
+    public void eliminarEnteroPorPosicion(int posicion) {
+        if (!(posicion < 0 || posicion >= this.arregloEnteros.length)) {
+        	int[] nuevoArregloEnteros = new int[this.arregloEnteros.length - 1];
+            int shift = 0;
 
-        for (int i = 0; i < nuevoArregloEnteros.length; i++) {
-            if (i == posicion) {
-                shift = 1; 
+            for (int i = 0; i < nuevoArregloEnteros.length; i++) {
+                if (i == posicion) {
+                    shift = 1;
+                }
+                nuevoArregloEnteros[i] = this.arregloEnteros[i + shift];
             }
-            nuevoArregloEnteros[i] = this.arregloEnteros[i + shift];
-        }
 
-        this.arregloEnteros = nuevoArregloEnteros;
+            this.arregloEnteros = nuevoArregloEnteros;
+        }
     }
+
 
     /**
      * Reinicia el arreglo de enteros con los valores contenidos en el arreglo del parámetro 'valores' truncados.
@@ -320,7 +329,7 @@ public class SandboxArreglos
     {
     	int contador = 0;
         for (int i = 0; i < this.arregloCadenas.length; i++) {
-        	if (this.arregloCadenas[i].toLowerCase().equals(cadena)) {
+        	if (this.arregloCadenas[i].equalsIgnoreCase(cadena)) {
         		contador++;
         	}
         }
